@@ -1,5 +1,337 @@
+
+Worked for 5m 32s
+Versão inicial concluída
+Preparei a v1.0.0 da aplicação Anúncios Distritais, pronta para colocar no GitHub e publicar no Vercel.
+
+Descarregar Anúncios Distritais v1.0.0
+
+README.md
+
+Funcionalidades incluídas
+Login com utilizador e palavra-passe;
+
+Perfil de Secretário Distrital;
+
+Perfil de Secretário Local;
+
+Cada secretário local vê apenas os anúncios da sua igreja;
+
+Cadastro de igrejas;
+
+Criação de utilizadores;
+
+Criação de reuniões distritais;
+
+Definição do prazo para submissão;
+
+Submissão de anúncios;
+
+Correcção e reenvio de anúncios devolvidos;
+
+Aprovação, devolução, rejeição e arquivo;
+
+Identificação dos anúncios submetidos fora do prazo;
+
+Modo Culto com letras grandes;
+
+Marcação do anúncio como já apresentado;
+
+Impressão da folha de anúncios;
+
+Alteração e redefinição de palavras-passe;
+
+Histórico das decisões;
+
+Instalação como aplicação no telefone;
+
+Proxy seguro no Vercel para comunicar com o Google Apps Script.
+
+Estrutura do projecto
+anuncios-distritais/
+├── index.html
+├── manifest.webmanifest
+├── service-worker.js
+├── vercel.json
+├── assets/
+│   ├── app.js
+│   ├── style.css
+│   └── ícones
+├── api/
+│   └── gas.js
+└── backend/
+    ├── Code.gs
+    ├── Setup.gs
+    └── appsscript.json
+Como colocar a funcionar
+1. Configurar o Google Apps Script
+Crie um projecto no Google Apps Script e copie estes ficheiros:
+
+Code.gs
+
+Setup.gs
+
+appsscript.json
+
+Depois execute:
+
+setupProject()
+Essa função criará automaticamente:
+
+a Google Sheet;
+
+todas as folhas da base de dados;
+
+a conta inicial admin;
+
+uma palavra-passe temporária;
+
+o segredo de comunicação com o Vercel.
+
+Os dados aparecerão no Registo de execução do Apps Script.
+
+2. Publicar o backend
+No Apps Script:
+
+Seleccione Implementar;
+
+Escolha Nova implementação;
+
+Tipo: Aplicação Web;
+
+Executar como: Eu;
+
+Quem tem acesso: Qualquer pessoa;
+
+Copie o endereço terminado em /exec.
+
+3. Colocar no GitHub
+Carregue o conteúdo da pasta anuncios-distritais para um novo repositório GitHub.
+
+4. Publicar no Vercel
+Importe o repositório e adicione estas variáveis:
+
+GAS_WEB_APP_URL
+PROXY_SECRET
+Em GAS_WEB_APP_URL, coloque o endereço /exec do Apps Script.
+
+Em PROXY_SECRET, coloque o segredo gerado por setupProject().
+
+Primeiro fluxo de utilização
+Entrar como admin;
+
+Alterar a palavra-passe temporária;
+
+Cadastrar as igrejas locais;
+
+Criar uma conta para cada secretário;
+
+Criar a primeira reunião distrital;
+
+Definir o prazo de submissão;
+
+Entregar as credenciais aos secretários locais;
+
+Receber e aprovar os anúncios;
+
+Abrir o Modo Culto durante a reunião.
+
+Esta versão foi validada quanto à estrutura dos ficheiros, sintaxe JavaScript, manifesto e carregamento estático. A publicação efectiva dependerá apenas da configuração das contas Google, GitHub e Vercel. 
+
+
+Today 1:50 PM
+como criar os ficheiros icon-192, icon-512 e icon.svg no github
+
+Preparei os três ficheiros prontos:
+
+icon-192.png
+
+icon-512.png
+
+icon.svg
+
+Descarregar os três num único ZIP
+
+1. Criar a pasta no GitHub
+Abra o repositório da aplicação no GitHub.
+
+Entre na pasta:
+
+assets
+Caso a pasta ainda não exista, pode criá-la ao carregar os ficheiros, indicando o caminho completo.
+
+2. Carregar os três ícones
+No GitHub:
+
+Clique em Add file;
+
+Seleccione Upload files;
+
+Arraste os ficheiros:
+
+icon-192.png
+
+icon-512.png
+
+icon.svg
+
+Confirme que está dentro da pasta assets;
+
+Em Commit changes, escreva:
+
+Adicionar ícones da aplicação
+Clique em Commit changes.
+
+A estrutura deve ficar assim:
+
+anuncios-distritais/
+├── assets/
+│   ├── app.js
+│   ├── style.css
+│   ├── icon-192.png
+│   ├── icon-512.png
+│   └── icon.svg
+├── index.html
+├── manifest.webmanifest
+└── service-worker.js
+3. Configurar o manifest.webmanifest
+Abra o ficheiro manifest.webmanifest e confirme que contém:
+
+{
+  "name": "Anúncios Distritais",
+  "short_name": "Anúncios",
+  "description": "Aplicação para submissão e gestão dos anúncios das igrejas do distrito.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8b0000",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+Depois clique em Commit changes.
+
+4. Configurar o ícone no index.html
+Dentro da secção <head> do index.html, coloque:
+
+<link rel="manifest" href="/manifest.webmanifest">
+
+<link rel="icon" type="image/svg+xml" href="/assets/icon.svg">
+
+<link rel="icon" type="image/png" sizes="192x192"
+      href="/assets/icon-192.png">
+
+<link rel="apple-touch-icon"
+      href="/assets/icon-192.png">
+
+<meta name="theme-color" content="#8b0000">
+Exemplo:
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Anúncios Distritais</title>
+
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <link rel="icon"
+        type="image/svg+xml"
+        href="/assets/icon.svg">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="/assets/icon-192.png">
+
+  <link rel="apple-touch-icon"
+        href="/assets/icon-192.png">
+
+  <meta name="theme-color" content="#8b0000">
+
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+5. Confirmar no Vercel
+Depois do commit, o Vercel deverá publicar automaticamente a nova versão.
+
+Abra directamente estes endereços, substituindo pelo domínio da sua aplicação:
+
+https://seu-dominio.vercel.app/assets/icon-192.png
+https://seu-dominio.vercel.app/assets/icon-512.png
+https://seu-dominio.vercel.app/assets/icon.svg
+Se os ícones aparecerem no navegador, foram correctamente carregados.
+
+Nota importante
+O ficheiro icon.svg pode ser criado directamente no GitHub através de Add file → Create new file, porque é um ficheiro de texto.
+
+Os ficheiros icon-192.png e icon-512.png são imagens binárias. Devem ser descarregados e carregados através de Upload files; não devem ser criados colando código no GitHub. 
+
+
+Today 3:16 PM
+mand me o ficheiro index.html utualizado
+
+Worked for 38s
+Segue o ficheiro completo e actualizado, mantendo todas as funcionalidades da aplicação e acrescentando correctamente os ícones:
+
+index.html
+
+No GitHub, substitua o ficheiro index.html actual por este novo ficheiro. Os ícones devem permanecer dentro da pasta:
+
+assets/
+├── icon.svg
+├── icon-192.png
+└── icon-512.png
+O novo index.html já contém:
+
+<link rel="manifest" href="/manifest.webmanifest">
+
+<link rel="icon" type="image/svg+xml" href="/assets/icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png">
+Depois de substituir o ficheiro no GitHub, aguarde a publicação automática do Vercel e actualize a página da aplicação.
+
+
+
+Library
+/
+Mordecai Arquivo
+/
+index.html
+
+
+
+
+
+Library
+/
+Mordecai Arquivo
+/
+index.html
+
+
+
+
 <!doctype html>
-<html lang="pt">
+<html lang="pt-MZ">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -7,7 +339,12 @@
   <meta name="description" content="Gestão de anúncios das igrejas locais para os cultos distritais.">
   <title>Anúncios Distritais</title>
   <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png">
+
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
