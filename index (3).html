@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#8b0000">
+  <meta name="description" content="Gestão de anúncios das igrejas locais para os cultos distritais.">
+  <title>Anúncios Distritais</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png">
+
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <section id="loginView" class="login-shell">
+    <div class="login-card">
+      <img src="/assets/icon.svg" alt="" class="login-logo">
+      <p class="eyebrow">Igreja do Nazareno</p>
+      <h1>Anúncios Distritais</h1>
+      <p class="muted">Envio, aprovação e leitura organizada dos anúncios das igrejas locais.</p>
+      <form id="loginForm" class="stack">
+        <label>Utilizador
+          <input id="loginUsername" autocomplete="username" required>
+        </label>
+        <label>Palavra-passe
+          <input id="loginPassword" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn primary wide" type="submit">Entrar</button>
+      </form>
+      <p id="loginError" class="form-error" hidden></p>
+    </div>
+  </section>
+
+  <div id="appView" class="app-shell" hidden>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="districtName">Distrito</p>
+        <h1 id="appName">Anúncios Distritais</h1>
+      </div>
+      <div class="top-actions">
+        <div class="user-badge">
+          <strong id="currentUserName"></strong>
+          <span id="currentUserRole"></span>
+        </div>
+        <button id="logoutBtn" class="btn ghost" type="button">Sair</button>
+      </div>
+    </header>
+
+    <nav id="mainNav" class="main-nav" aria-label="Navegação principal"></nav>
+
+    <main class="content">
+      <section id="homePanel" class="panel"></section>
+
+      <section id="announcementFormPanel" class="panel" hidden>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Submissão</p>
+            <h2 id="announcementFormTitle">Enviar anúncio</h2>
+          </div>
+          <button id="cancelAnnouncementEdit" class="btn ghost" type="button" hidden>Cancelar edição</button>
+        </div>
+        <form id="announcementForm" class="form-grid">
+          <input id="announcementId" type="hidden">
+          <label>Reunião distrital <span>*</span>
+            <select id="announcementMeeting" required></select>
+          </label>
+          <label id="announcementChurchWrap" hidden>Igreja local <span>*</span>
+            <select id="announcementChurch"></select>
+          </label>
+          <label>Título do anúncio <span>*</span>
+            <input id="announcementTitle" maxlength="180" required>
+          </label>
+          <label>Categoria
+            <select id="announcementCategory">
+              <option value="">Seleccionar</option>
+              <option>Culto ou actividade espiritual</option>
+              <option>Evangelização</option>
+              <option>Juventude</option>
+              <option>Mulheres</option>
+              <option>Homens</option>
+              <option>Crianças</option>
+              <option>Formação</option>
+              <option>Conferência</option>
+              <option>Falecimento ou solidariedade</option>
+              <option>Outro</option>
+            </select>
+          </label>
+          <label class="full">Texto exacto a ser lido no culto <span>*</span>
+            <textarea id="announcementReadText" rows="7" maxlength="5000" required placeholder="Escreva o anúncio exactamente como deve ser apresentado no culto."></textarea>
+          </label>
+          <label>Data da actividade
+            <input id="announcementEventDate" type="date">
+          </label>
+          <label>Hora
+            <input id="announcementEventTime" type="time">
+          </label>
+          <label>Local
+            <input id="announcementEventLocation" maxlength="220">
+          </label>
+          <label>Público-alvo
+            <input id="announcementAudience" maxlength="220" placeholder="Ex.: todas as igrejas, jovens, líderes">
+          </label>
+          <label>Pessoa de contacto
+            <input id="announcementContactName" maxlength="180">
+          </label>
+          <label>Telefone
+            <input id="announcementContactPhone" inputmode="tel" maxlength="40">
+          </label>
+          <label>Prioridade
+            <select id="announcementPriority">
+              <option value="NORMAL">Normal</option>
+              <option value="HIGH">Alta</option>
+              <option value="URGENT">Urgente</option>
+            </select>
+          </label>
+          <div class="full form-actions">
+            <button id="saveAnnouncementBtn" class="btn primary" type="submit">Submeter anúncio</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="announcementsPanel" class="panel" hidden>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Registos</p>
+            <h2 id="announcementsHeading">Anúncios</h2>
+          </div>
+          <div class="filters">
+            <select id="filterMeeting" aria-label="Filtrar por reunião"></select>
+            <select id="filterStatus" aria-label="Filtrar por estado">
+              <option value="">Todos os estados</option>
+              <option value="SUBMITTED">Submetidos</option>
+              <option value="RETURNED">Devolvidos</option>
+              <option value="APPROVED">Aprovados</option>
+              <option value="REJECTED">Rejeitados</option>
+              <option value="ANNOUNCED">Anunciados</option>
+              <option value="ARCHIVED">Arquivados</option>
+            </select>
+          </div>
+        </div>
+        <div id="announcementsList" class="cards"></div>
+      </section>
+
+      <section id="meetingsPanel" class="panel" hidden>
+        <div class="section-head">
+          <div><p class="eyebrow">Administração</p><h2>Reuniões distritais</h2></div>
+        </div>
+        <div class="two-col">
+          <form id="meetingForm" class="card stack">
+            <h3>Nova reunião</h3>
+            <label>Designação <span>*</span><input id="meetingName" required placeholder="Ex.: Culto Distrital de Agosto"></label>
+            <label>Data <span>*</span><input id="meetingDate" type="date" required></label>
+            <label>Local<input id="meetingLocation"></label>
+            <label>Prazo de submissão <span>*</span><input id="meetingDeadline" type="datetime-local" required></label>
+            <button class="btn primary" type="submit">Criar reunião</button>
+          </form>
+          <div>
+            <h3>Reuniões existentes</h3>
+            <div id="meetingsList" class="cards compact"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="managementPanel" class="panel" hidden>
+        <div class="section-head">
+          <div><p class="eyebrow">Administração</p><h2>Igrejas e utilizadores</h2></div>
+        </div>
+        <div class="two-col">
+          <form id="churchForm" class="card stack">
+            <h3>Cadastrar igreja</h3>
+            <label>Nome da igreja <span>*</span><input id="churchName" required></label>
+            <label>Zona<input id="churchZone"></label>
+            <label>Secretário local<input id="churchSecretary"></label>
+            <label>Telefone<input id="churchPhone" inputmode="tel"></label>
+            <button class="btn primary" type="submit">Guardar igreja</button>
+          </form>
+
+          <form id="userForm" class="card stack">
+            <h3>Criar utilizador</h3>
+            <label>Nome completo <span>*</span><input id="userName" required></label>
+            <label>Utilizador <span>*</span><input id="userUsername" required autocomplete="off"></label>
+            <label>Perfil
+              <select id="userRole">
+                <option value="LOCAL_SECRETARY">Secretário local</option>
+                <option value="DISTRICT_ADMIN">Secretário distrital</option>
+              </select>
+            </label>
+            <label id="userChurchWrap">Igreja <span>*</span><select id="userChurch"></select></label>
+            <label>Telefone<input id="userPhone" inputmode="tel"></label>
+            <label>Palavra-passe temporária<input id="userTemporaryPassword" minlength="8" placeholder="Deixe vazio para gerar automaticamente"></label>
+            <button class="btn primary" type="submit">Criar utilizador</button>
+          </form>
+        </div>
+        <div class="section-head subhead"><h3>Utilizadores registados</h3></div>
+        <div id="usersList" class="table-wrap"></div>
+      </section>
+
+      <section id="worshipPanel" class="panel worship-panel" hidden>
+        <div class="section-head">
+          <div><p class="eyebrow">Apresentação</p><h2>Modo Culto</h2></div>
+          <div class="filters">
+            <select id="worshipMeeting"></select>
+            <button id="printWorshipBtn" class="btn ghost" type="button">Imprimir</button>
+          </div>
+        </div>
+        <div id="worshipEmpty" class="empty-state">Seleccione uma reunião com anúncios aprovados.</div>
+        <article id="worshipCard" class="worship-card" hidden>
+          <div class="worship-meta">
+            <span id="worshipCounter"></span>
+            <span id="worshipChurch"></span>
+          </div>
+          <h2 id="worshipTitle"></h2>
+          <p id="worshipText"></p>
+          <div id="worshipDetails" class="worship-details"></div>
+          <div class="worship-actions">
+            <button id="worshipPrev" class="btn ghost" type="button">Anterior</button>
+            <button id="worshipAnnounced" class="btn success" type="button">Marcar como anunciado</button>
+            <button id="worshipNext" class="btn primary" type="button">Seguinte</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="passwordPanel" class="panel" hidden>
+        <div class="narrow">
+          <p class="eyebrow">Segurança</p>
+          <h2>Alterar palavra-passe</h2>
+          <p class="muted">Por segurança, altere a palavra-passe temporária antes de continuar.</p>
+          <form id="passwordForm" class="card stack">
+            <label>Palavra-passe actual<input id="currentPassword" type="password" required></label>
+            <label>Nova palavra-passe<input id="newPassword" type="password" minlength="8" required></label>
+            <label>Confirmar nova palavra-passe<input id="confirmPassword" type="password" minlength="8" required></label>
+            <button class="btn primary" type="submit">Alterar palavra-passe</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="decisionDialog">
+    <form method="dialog" class="dialog-card" id="decisionForm">
+      <input id="decisionAnnouncementId" type="hidden">
+      <input id="decisionStatus" type="hidden">
+      <h3 id="decisionTitle">Decisão</h3>
+      <p id="decisionHelp" class="muted"></p>
+      <label>Observação
+        <textarea id="decisionNote" rows="4" maxlength="1000"></textarea>
+      </label>
+      <div class="dialog-actions">
+        <button id="decisionCancel" type="button" class="btn ghost">Cancelar</button>
+        <button id="decisionConfirm" value="default" class="btn primary">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
